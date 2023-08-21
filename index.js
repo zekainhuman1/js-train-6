@@ -1,5 +1,7 @@
 //Завдання 1.Cтворіть об'єкт person за допомогою конструктора з полями name: "John",age: 25
 let person = {};
+person["name"] = "John";
+person["age"] = 25;
 
 console.log("Завдання 1 ====================================");
 
@@ -8,6 +10,12 @@ console.log("person", person); // Виведе {name: "John", age: 25}
 //Завдання 2. Cтворіть об'єкт personLarge який буде мати такі ж поля як person ,
 // та вкладений об'єкт address з полями  street: "123 Main St", city: "New York", country: "USA",
 let personLarge = {
+  ...person,
+  address: {
+    street: "123 Main St",
+    city: "New York",
+    country: "USA"
+  }
   //використовуємо деструктурізацію на об'єкті person
   //створюємо об'єкт address
 };
@@ -29,6 +37,7 @@ var animal = {
 
 // Функція для створення нового об'єкта з тими ж властивостями
 function copyObject(obj) {
+  return Object(obj)
   // Використовуємо синтаксис деструктурізації {...person} для створення нового об'єкта з тими ж властивостями
   // Повертаємо новий об'єкт
 }
@@ -44,6 +53,9 @@ let fruit = {
 };
 // Функція для перевірки наявності властивості в об'єкті
 function hasProperty(obj, property) {
+  for (const i in obj) {
+    return i === property ? `Property ${property} exists`: `Property ${property} does not exist`
+  }
   // Використовуємо оператор "in" для перевірки наявності властивості
   // Запишимо умову якщо властивість існує повертає текст Property ${property} exists,
   // інашке повертаємо Property ${property} does not exist.
@@ -60,6 +72,10 @@ let country = {
 };
 // Функція для виведення всіх ключів і значень об'єкта
 function printKeysAndValues(obj) {
+  for (const i in obj) {
+    console.log(`Key: ${i}, Value: ${obj[i]}`)
+  }
+  
   // Проходимося по всіх ключах об'єкту за допомогою циклу "for in"
   // Виводимо ключ та значення на консоль
 }
@@ -77,6 +93,8 @@ let movie = {
 };
 // Функція для видалення властивості з об'єкта
 function deleteProperty(obj, property) {
+  delete obj[property]
+  return obj
   // Використовуємо оператор "delete" для видалення властивості
   // Повертаємо об'єкт
 }
@@ -89,14 +107,18 @@ console.log(deleteProperty(movie, "director")); // Виведе { title: 'Incept
 let user = {
   name: "John",
   age: 25,
+  introduce() {
+    return `My ${this.name} is John and I am ${this.age} years old`
+  }
   // Створюємо метод introduce, який за допомогою ключового слова this має повернути такий рядок
   // My name is John and I am 25 years old.
 };
 
 console.log("Завдання 7 ====================================");
+// user.introduce()
 // Викликаємо метод introduce об'єкта user
 // Розкоментуйте рядок нижче після виконня завдання для перевірки
-// console.log(user.introduce());
+console.log(user.introduce());
 // Виведе My name is John and I am 25 years old.
 
 // Завдання 8: Створіть функцію, яка додає нове поле до об'єкту.
@@ -107,6 +129,8 @@ let book = {
 
 // Функція для додавання нового поля до об'єкту
 function addField(obj, newField, value) {
+  obj[newField] = value
+  return obj
   // Додаємо нове поле до об'єкту з допомогою квадратних дужок
   // Повертаємо об'єкт
 }
@@ -121,6 +145,8 @@ let laptop = {
 };
 // Функція для деструктуризації об'єкту
 function destructureObject(obj) {
+  let {brand, model} = obj
+  return `Brand: ${brand}, Model: ${model}`
   // Використовуємо деструктуризацію для створення нових змінних з властивостей об'єкту і отримуємо з нього змінні brand та model
   // Повертаємо нові змінні  в форматі 'Brand: ${brand}, Model: ${model}'
 }
@@ -138,6 +164,11 @@ let userList = [
 ];
 // Функція для зміни ролі всіх осіб у масиві
 function changeRole(array, newRole) {
+  for (const i of array) {
+  i.role = newRole
+  }
+  console.log(array)
+
   // Ітеруємося по масиву об'єктів за допомогою циклу "for of"
   // Змінюємо роль кожного користувача на нове ім'я
   // Виводимо об'єкт на консоль
@@ -161,6 +192,9 @@ let product = {
 };
 // Функція для виводу деталей людини
 function printProductDetails(obj) {
+  let {productName, price} = obj;
+  let {companyName, country} = obj.manufacturer;
+  console.log(productName, price, companyName, country)
   // Використовуємо деструктуризацію для отримання значень productName, price i також значень companyName, country вкладеного об'єкту manufacturer
   // Виводимо productName, price, companyName та country на консоль
 }
@@ -176,6 +210,10 @@ let planet2 = { name: "Земля", radius: 6371 };
 
 // Функція для перевірки рівності об'єктів
 function compareObjects(obj1, obj2) {
+  console.log(obj1 === obj2)
+  obj2 = obj1
+  console.log(obj1 === obj2)
+
   // Виводимо результат порівняння об'єктів
   // Присвоємо obj2 значення об'єкту obj1
   // Виводимо результат порівняння об'єктів
@@ -199,6 +237,7 @@ function showCarInfo({
   year = 0,
   country = "Unknown",
 } = {}) {
+  return {brand, year, country}
   // Повертаємо об'єкт зі значеннями властивостей
 }
 
@@ -208,12 +247,15 @@ console.log(showCarInfo(car)); // Виведе { brand: 'BMW', year: 2022, count
 // Завдання 14: Додайте нову властивість до вбудованого об'єкту Array через літерал.
 // Створюємо функцію, яка буде додавати нову властивість до масиву
 function addProperty(array) {
+  Array.prototype.customProperty = 'myProperty';
+  return array;
   // Додаємо нову властивість customProperty до прототипу Array зі значенням myProperty
   // Повертаємо переданий масив з новою властивістю
 }
 
 console.log("Завдання 14 ====================================");
+const newArr = addProperty([1, 2, 3, 4, 5]);
 // Створимо масив newArr з новою властивістю за допомогої нашої функції в яку передамо [1, 2, 3, 4, 5]
 
 // Розкоментуйте рядок нижче після виконня завдання для перевірки
-// console.log(newArr.customProperty); // Виведе myProperty
+console.log(newArr.customProperty); // Виведе myProperty
